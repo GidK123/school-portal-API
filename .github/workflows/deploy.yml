@@ -9,6 +9,7 @@ env:
   ECS_SERVICE: school-portal-backend-service
   ECS_CLUSTER: school-portal-backend
   CONTAINER_NAME: backend
+  TASK_DEFINITION_FILE: task-definition.json  # <-- you need this file in repo root
 
 jobs:
   deploy:
@@ -45,9 +46,22 @@ jobs:
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
-    - name: Deploy to Amazon ECS
+    - name: Download current task definition
+      run: |
+        aws ecs describe-task-definition --task-definition ${{ env.ECS_SERVICE }} --query taskDefinition > $TASK_DEFINITION_FILE
+
+    - name: Fill in the new image ID in the Amazon ECS task definition
+      id: task-def
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+        task-definition: ${{ env.TASK_DEFINITION_FILE }}
+        container-name: ${{ env.CONTAINER_NAME }}
+        image: ${{ steps.build-image.outputs.image }}
+
+    - name: Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
+        task-definition: ${{ steps.task-def.outputs.task-definition }}
         service: ${{ env.ECS_SERVICE }}
         cluster: ${{ env.ECS_CLUSTER }}
-        image: ${{ steps.build-image.outputs.image }}
+        wait-for-service-stability: true
