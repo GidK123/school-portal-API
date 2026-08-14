@@ -27,7 +27,6 @@ app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
-const PORT = process.env.PORT || 5001;
 const FRONTEND_URL = process.env.FRONTEND_URL || "*";
 
 app.use(cors({ origin: FRONTEND_URL }));
