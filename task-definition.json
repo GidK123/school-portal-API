@@ -1,0 +1,56 @@
+{
+  "taskDefinitionArn": "arn:aws:ecs:us-east-1:105028894424:task-definition/school-portal-backend-service:2",
+  "containerDefinitions": [
+    {
+      "name": "backend",
+      "image": "105028894424.dkr.ecr.us-east-1.amazonaws.com/school-portal-backend:d82060673593de61d21ccab6cb2e7751a62ba5f8",
+      "cpu": 0,
+      "portMappings": [
+        {
+          "containerPort": 5001,
+          "hostPort": 5001,
+          "protocol": "tcp"
+        }
+      ],
+      "essential": true,
+      "environment": [],
+      "mountPoints": [],
+      "volumesFrom": [],
+      "systemControls": []
+    }
+  ],
+  "family": "school-portal-backend-service",
+  "executionRoleArn": "arn:aws:iam::105028894424:role/ecsTaskExecutionRole",
+  "networkMode": "awsvpc",
+  "revision": 2,
+  "volumes": [],
+  "status": "ACTIVE",
+  "requiresAttributes": [
+    {
+      "name": "com.amazonaws.ecs.capability.ecr-auth"
+    },
+    {
+      "name": "ecs.capability.execution-role-ecr-pull"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+    },
+    {
+      "name": "ecs.capability.task-eni"
+    }
+  ],
+  "placementConstraints": [],
+  "compatibilities": [
+    "EC2",
+    "FARGATE",
+    "MANAGED_INSTANCES"
+  ],
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "cpu": "256",
+  "memory": "512",
+  "registeredAt": "2026-08-14T12:13:31.928Z",
+  "registeredBy": "arn:aws:iam::105028894424:user/github-appdeploy-2026",
+  "tags": []
+}
